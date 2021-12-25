@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "version": "0.0.1",
+  "description": "webRTC APP",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "WebRTC",
+    "APP",
+    "卫慧杰"
+  ],
+  "author": "weihuijie <w920098695@sina.cn>",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15",
+    "socket.io": "^4.4.0",
+    "uuid": "^8.3.2"
+  }
+}

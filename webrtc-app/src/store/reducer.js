@@ -1,12 +1,16 @@
+import Actions from "./actions"
+
 const initState = {
-  identity: ''
+  identity: '',
+  isRoomHost: false
 }
 
 const reducer = (state = initState, action) => {
   switch (action.type) {
-    case "DUMMY_ACTION":
+    case Actions.SET_IS_ROOM_HOST:
       return {
-        ...state
+        ...state,
+        isRoomHost: action.isRoomHost
       }
     default:
       return state

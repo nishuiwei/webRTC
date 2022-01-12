@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 import JoinRoomInputs from './JoinRoomInputs'
 import OnlyWithAudioCheckbox from './OnlyWithAudioCheckbox'
 import { setConnectOnlyWithAudio } from '../../store/actions'
+import ErrorMessage from './ErrorMessage'
 const JoinRoomContent = (props) => {
   const { isRoomHost, setConnectOnlyWithAudio, connectOnlyWithAudio } = props
   const [roomId, setRoomId] = useState("")
   const [name, setName] = useState("")
-
   return (
     <>
       <JoinRoomInputs
@@ -21,6 +21,7 @@ const JoinRoomContent = (props) => {
         connectOnlyWithAudio={connectOnlyWithAudio} 
         setConnectOnlyWithAudio={setConnectOnlyWithAudio} 
       />
+      <ErrorMessage errorMessage='房间号不正确' />
     </>
   )
 }

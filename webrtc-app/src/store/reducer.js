@@ -3,7 +3,8 @@ import Actions from "./actions"
 const initState = {
   identity: '',
   isRoomHost: false,
-  connectOnlyWithAudio: false
+  connectOnlyWithAudio: false,
+  roomId: null,
 }
 
 const reducer = (state = initState, action) => {
@@ -17,6 +18,16 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         connectOnlyWithAudio: action.connectOnlyWithAudio
+      }
+    case Actions.SET_ROOM_ID:
+      return {
+        ...state,
+        roomId: action.roomId
+      }
+    case Actions.SET_IDENTITY:
+      return {
+        ...state,
+        identity: action.identity
       }
     default:
       return state

@@ -4,10 +4,16 @@ import JoinRoomInputs from './JoinRoomInputs'
 import OnlyWithAudioCheckbox from './OnlyWithAudioCheckbox'
 import { setConnectOnlyWithAudio } from '../../store/actions'
 import ErrorMessage from './ErrorMessage'
+import JoinRoomButtons from './JoinRoomButtons'
 const JoinRoomContent = (props) => {
   const { isRoomHost, setConnectOnlyWithAudio, connectOnlyWithAudio } = props
   const [roomId, setRoomId] = useState("")
   const [name, setName] = useState("")
+  // 加入房间的事件
+  const handleJoinRoom = () => {
+    // 加入房间
+    console.log('成功加入房间')
+  }
   return (
     <>
       <JoinRoomInputs
@@ -22,6 +28,7 @@ const JoinRoomContent = (props) => {
         setConnectOnlyWithAudio={setConnectOnlyWithAudio} 
       />
       <ErrorMessage errorMessage='房间号不正确' />
+      <JoinRoomButtons isRoomHost={isRoomHost} handleJoinRoom={handleJoinRoom} />
     </>
   )
 }

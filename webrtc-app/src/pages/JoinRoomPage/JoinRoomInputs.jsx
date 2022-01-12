@@ -18,9 +18,9 @@ const JoinRoomInputs = (props) => {
     <div className='join_room_inputs_container'>
       {
         !isRoomHost &&
-        <Input placeholder='请输入会议ID号...' value={roomId} onChange={handleRoomIdChange} />
+        <Input placeholder='请输入会议ID号...' value={roomId} changeHandler={handleRoomIdChange} />
       }
-      <Input placeholder='请输入姓名...' value={name} onChange={handleNameChange} />
+      <Input placeholder='请输入姓名...' value={name} changeHandler={handleNameChange} />
     </div>
   )
 }

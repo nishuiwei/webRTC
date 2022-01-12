@@ -6,14 +6,25 @@ import { setConnectOnlyWithAudio } from '../../store/actions'
 import ErrorMessage from './ErrorMessage'
 import JoinRoomButtons from './JoinRoomButtons'
 import { getRoomExists } from '../../utils/api'
+import { useNavigate } from 'react-router-dom'
+
 const JoinRoomContent = (props) => {
   const { isRoomHost, setConnectOnlyWithAudio, connectOnlyWithAudio } = props
   const [roomId, setRoomId] = useState("")
   const [name, setName] = useState("")
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const navigate = useNavigate()
   // 加入房间的事件
   const handleJoinRoom = async () => {
     // 加入房间
+    if(isRoomHost) {
+      createRoom()
+    } else {
+      await joinRoom()
+    }
+  }
+
+  const joinRoom = async () => {
     const response = await getRoomExists(roomId)
     const { roomExists, full } = response
     if(roomExists) {
@@ -21,12 +32,15 @@ const JoinRoomContent = (props) => {
         setErrorMessage('会议房间人数已满，请稍后再试')
       } else {
         // 进入房间
-        console.log('进入房间')
+        navigate('/room')
       }
-    } else {
+    } else {  
       setErrorMessage('会议房间不存在，请验证你的ID是否正确')
     }
   }
+  const createRoom = () => {
+    navigate('/room')
+  }  
   return (
     <>
       <JoinRoomInputs

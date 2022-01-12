@@ -13,6 +13,33 @@ const server = http.createServer(app)
 // 跨域处理
 app.use(cors())
 
+// 初始化房间和用户
+let connectedUsers = []
+let rooms = []
+
+// 创建路由验证房间是否存在
+app.get('/api/room-exists/:roomId', (req, res) => {
+  const roomId = req.params.roomId
+  const room = rooms.find((room) => {
+    room.id === roomId
+  })
+  if (room) {
+    // 房间已存在
+    if(room.connectedUsers.length > 3) {
+      // 房间已经满员
+      return res.send({roomExists: true, full: true})
+    } else {
+      // 房间可以加入
+      return res.send({roomExists: true, full: false})
+    }
+  } else {
+    // 房间不存在
+    return res.send({
+      roomExists: false,
+    })
+  }
+})
+
 // socket.io 设定
 const io = require('socket.io')(server, {
   // 设定跨域

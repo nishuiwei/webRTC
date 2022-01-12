@@ -5,14 +5,27 @@ import OnlyWithAudioCheckbox from './OnlyWithAudioCheckbox'
 import { setConnectOnlyWithAudio } from '../../store/actions'
 import ErrorMessage from './ErrorMessage'
 import JoinRoomButtons from './JoinRoomButtons'
+import { getRoomExists } from '../../utils/api'
 const JoinRoomContent = (props) => {
   const { isRoomHost, setConnectOnlyWithAudio, connectOnlyWithAudio } = props
   const [roomId, setRoomId] = useState("")
   const [name, setName] = useState("")
+  const [errorMessage, setErrorMessage] = useState('')
   // 加入房间的事件
-  const handleJoinRoom = () => {
+  const handleJoinRoom = async () => {
     // 加入房间
-    console.log('成功加入房间')
+    const response = await getRoomExists(roomId)
+    const { roomExists, full } = response
+    if(roomExists) {
+      if(full) {
+        setErrorMessage('会议房间人数已满，请稍后再试')
+      } else {
+        // 进入房间
+        console.log('进入房间')
+      }
+    } else {
+      setErrorMessage('会议房间不存在，请验证你的ID是否正确')
+    }
   }
   return (
     <>
@@ -27,7 +40,7 @@ const JoinRoomContent = (props) => {
         connectOnlyWithAudio={connectOnlyWithAudio} 
         setConnectOnlyWithAudio={setConnectOnlyWithAudio} 
       />
-      <ErrorMessage errorMessage='房间号不正确' />
+      <ErrorMessage errorMessage={errorMessage} />
       <JoinRoomButtons isRoomHost={isRoomHost} handleJoinRoom={handleJoinRoom} />
     </>
   )

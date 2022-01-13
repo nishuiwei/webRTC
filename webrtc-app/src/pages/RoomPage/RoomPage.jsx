@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'
 import { connect } from "react-redux";
 import * as webRTCHanler from '../../utils/webRTCHandler';
 import ChatSection from './ChatSection/ChatSection'
+import Overlay from './Overlay';
 import ParticipantsSection from './ParticipantsSection/ParticipantsSection'
 import RoomLabel from './RoomLabel'
 import './Roompage.css'
 import VideoSection from './VideoSection/VideoSection'
-const RoomPage = ({roomId, isRoomHost, indentity}) => {
+const RoomPage = ({roomId, isRoomHost, indentity, showOverlay}) => {
   
   useEffect(() => {
     webRTCHanler.getLocalPreviewAndInitRoomConnect(isRoomHost, indentity, roomId)
@@ -18,6 +19,9 @@ const RoomPage = ({roomId, isRoomHost, indentity}) => {
       <VideoSection />
       <ChatSection />
       <RoomLabel roomId={roomId} />
+      {
+        showOverlay && (<Overlay />)
+      }
     </div>
   )
 }

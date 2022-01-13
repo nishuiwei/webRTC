@@ -15,7 +15,7 @@ const dummyParticipants = [
 ]
 
 const SingelParticipant = (props) => {
-  const {identity, lastItem, participant} = props
+  const {identity, lastItem} = props
   return (
     <>
       <p className='participants_paragraph'>

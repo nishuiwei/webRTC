@@ -8,7 +8,7 @@ const SwitchToScreenButton = () => {
   }
   return (
     <div className='video_button_container'>
-      <img src={SwitchImg} title='共享屏幕' onClick={handleScreenShareToggle} className='video_button_image' />
+      <img src={SwitchImg} alt='共享屏幕' title='共享屏幕' onClick={handleScreenShareToggle} className='video_button_image' />
     </div>
   )
 }

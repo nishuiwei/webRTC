@@ -50,7 +50,9 @@ const io = require('socket.io')(server, {
     methods: ['GET', 'POST']
   }
 })
-
+io.on('connection', (socket) => {
+  console.log(`socket 客户端已连接${socket.id}`)
+})
 // 监听端口号
 server.listen(PORT, () => {
   console.log(`服务器正在${PORT}端口运行`)

@@ -11,7 +11,7 @@ const RoomPage = ({roomId, isRoomHost, indentity, showOverlay}) => {
   
   useEffect(() => {
     webRTCHanler.getLocalPreviewAndInitRoomConnect(isRoomHost, indentity, roomId)
-  }, [webRTCHanler, isRoomHost, roomId, indentity])
+  }, [])
 
   return (
     <div className='room_container'>

@@ -11,7 +11,7 @@ const OnlyWithAudioCheckbox = ({setConnectOnlyWithAudio, connectOnlyWithAudio}) 
       <div className='checkbox_connection' onClick={handleConnectionTypeChange}>
         {
           connectOnlyWithAudio && (
-            <img className='checkbox_image' src={CheckImage} />
+            <img className='checkbox_image' src={CheckImage} alt="单选框" />
           )
         }
       </div>

@@ -9,8 +9,14 @@ import './Roompage.css'
 import VideoSection from './VideoSection/VideoSection'
 const RoomPage = ({roomId, isRoomHost, identity, showOverlay}) => {
   useEffect(() => {
+    if (!isRoomHost && !roomId) {
+      // 动态获取接口
+      const siteUrl = window.location.origin;
+      // 设置当前定向到的URL
+      window.location.href = siteUrl;
+    }
     webRTCHanler.getLocalPreviewAndInitRoomConnect(isRoomHost, identity, roomId)
-  }, [roomId, isRoomHost, identity])
+  }, [])
 
   return (
     <div className='room_container'>

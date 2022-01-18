@@ -52,7 +52,13 @@ const io = require('socket.io')(server, {
 })
 io.on('connection', (socket) => {
   console.log(`socket 客户端已连接${socket.id}`)
+
+  socket.on('create-new-room', (data) => {
+    console.log('主持人正在创建会议房间...')
+    console.log(data)
+  })
 })
+
 // 监听端口号
 server.listen(PORT, () => {
   console.log(`服务器正在${PORT}端口运行`)

@@ -10,3 +10,17 @@ export const connectWithScoketIOServer = () => {
     console.log(socket.id)
   })
 }
+
+// 主持人创建会议房间
+export const createNewRoom = (identity) => {
+  const data = {
+    identity
+  }
+  // 向服务器发送创建会议房间的数据（事件）
+  socket.emit('create-new-room', data)
+}
+
+// 加入会议房间
+export const joinRoom = (roomId, identity) => {
+  // 向服务器发送加入会议房间的数据（事件）
+}

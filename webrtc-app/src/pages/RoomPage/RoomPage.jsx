@@ -7,11 +7,10 @@ import ParticipantsSection from './ParticipantsSection/ParticipantsSection'
 import RoomLabel from './RoomLabel'
 import './Roompage.css'
 import VideoSection from './VideoSection/VideoSection'
-const RoomPage = ({roomId, isRoomHost, indentity, showOverlay}) => {
-  
+const RoomPage = ({roomId, isRoomHost, identity, showOverlay}) => {
   useEffect(() => {
-    webRTCHanler.getLocalPreviewAndInitRoomConnect(isRoomHost, indentity, roomId)
-  }, [roomId, isRoomHost, indentity])
+    webRTCHanler.getLocalPreviewAndInitRoomConnect(isRoomHost, identity, roomId)
+  }, [roomId, isRoomHost, identity])
 
   return (
     <div className='room_container'>

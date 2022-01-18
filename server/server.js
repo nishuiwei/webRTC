@@ -54,10 +54,38 @@ io.on('connection', (socket) => {
   console.log(`socket 客户端已连接${socket.id}`)
 
   socket.on('create-new-room', (data) => {
-    console.log('主持人正在创建会议房间...')
-    console.log(data)
+    createNewRoomHandler(data, socket)
   })
 })
+
+// socket.io handler
+const createNewRoomHandler = (data, socket) => {
+  const socketId = socket.id
+  const { identity } = data
+  const roomId = uuidv4()
+  console.log(`主持人正在创建会议房间...${socketId}`)
+  console.log(data)
+  // 创建新用户（进入会议的人）
+  const newUser = {
+    id: uuidv4(),
+    identity,
+    roomId,
+    socketId
+  }
+  // 将新用户添加到已链接的用户数组里面
+  connectedUsers = [...connectedUsers, newUser]
+  // 创建新房间
+  const newRoom = {
+    id: roomId,
+    connectedUsers,
+  }
+  // 新用户加入会议房间
+  socket.join(roomId)
+  rooms = [...rooms, newRoom]
+  // 向客户端发送数据告知房间已创建（roomId）
+  
+  // 发送通知告知有新用户加入并更新房间
+}
 
 // 监听端口号
 server.listen(PORT, () => {

@@ -1,4 +1,6 @@
 import io from 'socket.io-client'
+import { setRoomId } from '../store/actions'
+import store from '../store/store'
 
 const SERVER = 'http://localhost:5555'
 
@@ -8,6 +10,10 @@ export const connectWithScoketIOServer = () => {
   socket.on('connect', () => {
     console.log('socket 成功链接')
     console.log(socket.id)
+  })
+  socket.on('room-id', data => {
+    const {roomId} = data
+    store.dispatch(setRoomId(roomId))
   })
 }
 

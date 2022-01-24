@@ -111,6 +111,15 @@ const joinRoomHandler = (data, socket) => {
   socket.join(roomId)
   // 将新用户添加到已链接的用户数组里面
   connectedUsers = [...connectedUsers, newUser]
+  // 告知除自己以外的其他已连接用户准备webRTC对等链接
+  room.connectedUsers.forEach(user => {
+    if(user.socketId !== socketId) {
+      const data = {
+        connUserSocketId: socketId
+      }
+      io.to(user.socketId).emit('conn-prepare', data)
+    }
+  })
   // 发送通知告知有新用户加入并更新房间
   io.to(roomId).emit('room-update', {connectedUsers: room.connectedUsers})
 }

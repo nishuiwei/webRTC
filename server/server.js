@@ -85,6 +85,7 @@ const createNewRoomHandler = (data, socket) => {
   // 向客户端发送数据告知房间已创建（roomId）
   socket.emit('room-id', {roomId})
   // 发送通知告知有新用户加入并更新房间
+  socket.emit('room-update', {connectedUsers: newRoom.connectedUsers})
 }
 
 // 监听端口号

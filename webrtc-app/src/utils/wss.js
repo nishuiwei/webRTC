@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import { setRoomId } from '../store/actions'
+import { setParticipants, setRoomId } from '../store/actions'
 import store from '../store/store'
 
 const SERVER = 'http://localhost:5555'
@@ -14,6 +14,11 @@ export const connectWithScoketIOServer = () => {
   socket.on('room-id', data => {
     const {roomId} = data
     store.dispatch(setRoomId(roomId))
+  })
+  socket.on('room-update', (data) => {
+    const { connectedUsers } = data
+    console.log(connectedUsers)
+    store.dispatch(setParticipants(connectedUsers))
   })
 }
 

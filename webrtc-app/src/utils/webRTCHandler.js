@@ -32,6 +32,11 @@ export const getLocalPreviewAndInitRoomConnect = async (
     })
 }
 
+// 准备webRTC对等链接
+export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
+  
+}
+
 const showLocalVideoPreview = (steam) => {
   // 显示本地视频
 }

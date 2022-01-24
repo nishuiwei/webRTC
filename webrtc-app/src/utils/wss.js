@@ -1,6 +1,7 @@
 import io from 'socket.io-client'
 import { setParticipants, setRoomId } from '../store/actions'
 import store from '../store/store'
+import * as webRTCHander from './webRTCHandler'
 
 const SERVER = 'http://localhost:5555'
 
@@ -12,14 +13,17 @@ export const connectWithScoketIOServer = () => {
     console.log(socket.id)
   })
   socket.on('room-id', data => {
-    const {roomId} = data
-    console.log(roomId)
+    const { roomId } = data
     store.dispatch(setRoomId(roomId))
   })
-  socket.on('room-update', (data) => {
+  socket.on('room-update', data => {
     const { connectedUsers } = data
-    console.log(connectedUsers)
     store.dispatch(setParticipants(connectedUsers))
+  })
+  socket.on('conn-prepare', data => {
+    const { connUserSocketId } = data
+    // 准备webRTC对等连接(已经存在于房间的用户)，false意味着发起方在等待接收方准备webRTC
+    webRTCHander.prepareNewPeerConnection(connUserSocketId, false)
   })
 }
 

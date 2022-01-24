@@ -104,4 +104,17 @@ const showLocalVideoPreview = (stream) => {
 // 添加接受的stream媒体流并展示
 const addStream = (stream, connUserSocketId) => {
   // 使用js创建容器展示视频
+  const videosContainer = document.getElementById('videos_portal')
+  const videoContainer = document.createElement('div')
+  videoContainer.id = connUserSocketId
+  videoContainer.classList.add('video_track_container')
+  const videoElement = document.createElement('video')
+  videoElement.autoplay = true
+  videoElement.muted = true
+  videoElement.srcObject = stream
+  videoElement.onloadedmetadata = () => {
+    videoElement.play();
+  }
+  videoContainer.appendChild(videoElement)
+  videosContainer.appendChild(videoContainer)
 }

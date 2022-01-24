@@ -24,9 +24,16 @@ export const connectWithScoketIOServer = () => {
     const { connUserSocketId } = data
     // 准备webRTC对等连接(已经存在于房间的用户)，false意味着发起方在等待接收方准备webRTC
     webRTCHander.prepareNewPeerConnection(connUserSocketId, false)
+    // 通知对方（发起方）我已经准备完毕可以进行webRTC链接
+    socket.emit('conn-init', {connUserSocketId})
   })
   socket.on('conn-signal', data => {
     webRTCHander.handlerSinglingData(data)
+  })
+  socket.on('conn-init', data => {
+    // 接收方的socketId
+    const { connUserSocketId } = data
+    webRTCHander.prepareNewPeerConnection(connUserSocketId, true)
   })
 }
 

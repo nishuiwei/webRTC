@@ -13,6 +13,7 @@ export const connectWithScoketIOServer = () => {
   })
   socket.on('room-id', data => {
     const {roomId} = data
+    console.log(roomId)
     store.dispatch(setRoomId(roomId))
   })
   socket.on('room-update', (data) => {
@@ -33,5 +34,11 @@ export const createNewRoom = (identity) => {
 
 // 加入会议房间
 export const joinRoom = (roomId, identity) => {
-  // 向服务器发送加入会议房间的数据（事件）
+  // 向服务器发送加入会议房间的 数据（事件）
+  const data = {
+    roomId,
+    identity
+  }
+
+  socket.emit('join-room', data)
 }

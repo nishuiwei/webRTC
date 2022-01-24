@@ -20,9 +20,7 @@ let rooms = []
 // 创建路由验证房间是否存在
 app.get('/api/room-exists/:roomId', (req, res) => {
   const roomId = req.params.roomId
-  const room = rooms.find((room) => {
-    room.id === roomId
-  })
+  const room = rooms.find((room) => room.id === roomId)
   if (room) {
     // 房间已存在
     if(room.connectedUsers.length > 3) {
@@ -56,6 +54,10 @@ io.on('connection', (socket) => {
   socket.on('create-new-room', (data) => {
     createNewRoomHandler(data, socket)
   })
+
+  socket.on('join-room', (data) => {
+    joinRoomHandler(data, socket)
+  })
 })
 
 // socket.io handler
@@ -64,7 +66,6 @@ const createNewRoomHandler = (data, socket) => {
   const { identity } = data
   const roomId = uuidv4()
   console.log(`主持人正在创建会议房间...${socketId}`)
-  console.log(data)
   // 创建新用户（进入会议的人）
   const newUser = {
     id: uuidv4(),
@@ -86,6 +87,28 @@ const createNewRoomHandler = (data, socket) => {
   socket.emit('room-id', {roomId})
   // 发送通知告知有新用户加入并更新房间
   socket.emit('room-update', {connectedUsers: newRoom.connectedUsers})
+}
+
+// 加入房间
+const joinRoomHandler = (data, socket) => {
+  const { roomId, identity } = data
+  const socketId = socket.id
+  const newUser = {
+    id: uuidv4(),
+    identity,
+    roomId,
+    socketId
+  }
+
+  // 判断传递过来的 roomId 是否匹配对应会议房间
+  const room = rooms.find(room => room.id === roomId)
+  room.connectedUsers = [...room.connectedUsers, newUser]
+  // 加入房间
+  socket.join(roomId)
+  // 将新用户添加到已链接的用户数组里面
+  connectedUsers = [...connectedUsers, newUser]
+  // 发送通知告知有新用户加入并更新房间
+  io.to(roomId).emit('room-update', {connectedUsers: room.connectedUsers})
 }
 
 // 监听端口号

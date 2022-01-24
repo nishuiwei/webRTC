@@ -55,6 +55,21 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
     config: configuration,
     stream: localStream
   })
+
+  // 信令数据交换
+  peers[connUserSocketId].on('signal', data => {
+    // data-a webrtc offer, answer, or ice candidate
+    const signalData = {
+      signal: data,
+      connUserSocketId, 
+    }
+    wss.signalPeerData(signalData);
+  })
+}
+
+// 将信令数据添加到接收webRTC对等链接准备的一方的对等对象中
+export const handlerSinglingData = (data) => {
+  peers[data.connUserSocketId].signal(data.signal);
 }
 
 const showLocalVideoPreview = (steam) => {

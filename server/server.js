@@ -58,6 +58,10 @@ io.on('connection', (socket) => {
   socket.on('join-room', (data) => {
     joinRoomHandler(data, socket)
   })
+
+  socket.on('disconnect', () => {
+    disconnectHandler(socket)
+  })
 })
 
 // socket.io handler
@@ -109,6 +113,29 @@ const joinRoomHandler = (data, socket) => {
   connectedUsers = [...connectedUsers, newUser]
   // 发送通知告知有新用户加入并更新房间
   io.to(roomId).emit('room-update', {connectedUsers: room.connectedUsers})
+}
+
+// 断开连接
+const disconnectHandler = (socket) => {
+  const socketId = socket.id
+  // 查询要离开会议房间的用户
+  const user = connectedUsers.find(user => user.socketId === socketId)
+  if(user) {
+    // 从会议房间进行删除
+    const room = rooms.find(room => room.id === user.roomId)
+    room.connectedUsers = room.connectedUsers.filter(user => user.socketId !== socketId)
+    // 离开房间
+    socket.leave(user.roomId)
+
+    // 当会议房间没有人员的时候要关闭整个会议室 （从 rooms 数组中删除该房间的信息）
+    if(room.connectedUsers.length > 0) {
+      // 发送通知告知有用户离开并更新房间
+      io.to(room.id).emit('room-update', {connectedUsers: room.connectedUsers})
+    } else {
+      // （从 rooms 数组中删除该房间的信息）
+      rooms = rooms.filter(room => room.id !== user.roomId)
+    }
+  }
 }
 
 // 监听端口号

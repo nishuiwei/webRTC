@@ -18,16 +18,16 @@ export const getLocalPreviewAndInitRoomConnect = async (
   navigator
     .mediaDevices
     .getUserMedia(defaultConstraints)
-    .then(steam => {
-      console.log(steam)
-      localStream = steam
+    .then(stream => {
+      console.log(stream)
+      localStream = stream
       // 预览本地视频
       showLocalVideoPreview(localStream)
       // 派发 action 隐藏加载动画
       store.dispatch(setShowOverlay(false))
       // 初始化房间链接
       isRoomHost ? wss.createNewRoom(identity) : wss.joinRoom(roomId, identity)
-      }).catch(err => {
+    }).catch(err => {
       console.log('无法获取本地媒体流')
       console.log(err)
     })
@@ -69,6 +69,7 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
 
   // 获取媒体流 stream
   peers[connUserSocketId].on('stream', stream => {
+    console.log('成功获取远程Stream')
     // 显示接收的stream媒体流
     addStream(stream, connUserSocketId)
     streams = [...streams, stream]
@@ -80,8 +81,24 @@ export const handlerSinglingData = (data) => {
   peers[data.connUserSocketId].signal(data.signal);
 }
 
+// Video UI 效果
+
 const showLocalVideoPreview = (stream) => {
   // 显示本地视频
+  const videosContainer = document.getElementById('videos_portal')
+  videosContainer.classList.add('videos_portal_styles')
+  const videoContainer = document.createElement('div')
+  videoContainer.classList.add('video_track_container')
+  const videoElement = document.createElement('video')
+  videoElement.autoplay = true
+  videoElement.muted = true
+  videoElement.srcObject = stream
+  // 指定源数据加载完再屌用
+  videoElement.onloadedmetadata = () => {
+    videoElement.play();
+  }
+  videoContainer.appendChild(videoElement)
+  videosContainer.appendChild(videoContainer)
 }
 
 // 添加接受的stream媒体流并展示

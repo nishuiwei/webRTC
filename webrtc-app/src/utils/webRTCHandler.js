@@ -1,6 +1,7 @@
 import { setShowOverlay } from "../store/actions";
 import store from "../store/store";
 import * as wss from './wss'
+import Peer from 'simple-peer'
 const  defaultConstraints = {
   audio: true,
   video: true
@@ -32,9 +33,28 @@ export const getLocalPreviewAndInitRoomConnect = async (
     })
 }
 
+let peers = {}
+
+// 配置STUN服务器
+const getConfiguration = () => {
+  return {
+    iceServers: [
+      {
+        urls: 'stun:stun1.l.google.com:19302'
+      }
+    ]
+  }
+}
+
 // 准备webRTC对等链接
 export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
-  
+  const configuration = getConfiguration()
+  // 实例划对等链接对象
+  peers[connUserSocketId] = new Peer({
+    initiator: isInitiator,
+    config: configuration,
+    stream: localStream
+  })
 }
 
 const showLocalVideoPreview = (steam) => {

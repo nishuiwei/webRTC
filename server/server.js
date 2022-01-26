@@ -90,7 +90,7 @@ const createNewRoomHandler = (data, socket) => {
   // 创建新房间
   const newRoom = {
     id: roomId,
-    connectedUsers,
+    connectedUsers: [newUser],
   }
   // 新用户加入会议房间
   socket.join(roomId)
@@ -141,6 +141,7 @@ const disconnectHandler = (socket) => {
     // 从会议房间进行删除
     const room = rooms.find(room => room.id === user.roomId)
     room.connectedUsers = room.connectedUsers.filter(user => user.socketId !== socketId)
+    connectedUsers.filter(user => user.socketId !== socketId)
     // 离开房间
     socket.leave(user.roomId)
 

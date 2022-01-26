@@ -84,6 +84,24 @@ export const handlerSinglingData = (data) => {
   peers[data.connUserSocketId].signal(data.signal);
 }
 
+// 用户退出删除媒体流
+export const removePeerConnection = (data) => {
+  const { socketId } = data
+  const videoContainer = document.getElementById(socketId)
+  const videoElement = document.getElementById(`${socketId}-video`)
+  if(videoContainer && videoElement) {
+    const tracks = videoElement.srcObject.getTracks()
+    tracks.forEach(track => track.stop())
+    videoElement.srcObject = null
+    videoContainer.removeChild(videoElement)
+    videoContainer.parentNode.removeChild(videoContainer)
+    if(peers[socketId]) {
+      peers[socketId].destry()
+    }
+    delete peers[socketId]
+  }
+}
+
 // Video UI 效果
 
 const showLocalVideoPreview = (stream) => {
@@ -115,6 +133,7 @@ const addStream = (stream, connUserSocketId) => {
   videoElement.autoplay = true
   videoElement.muted = true
   videoElement.srcObject = stream
+  videoElement.id = `${connUserSocketId}-video`
   videoElement.onloadedmetadata = () => {
     videoElement.play();
   }

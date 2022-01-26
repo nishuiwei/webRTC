@@ -35,6 +35,9 @@ export const connectWithScoketIOServer = () => {
     const { connUserSocketId } = data
     webRTCHander.prepareNewPeerConnection(connUserSocketId, true)
   })
+  socket.on('user-disconected', data => {
+    webRTCHander.removePeerConnection(data)
+  })
 }
 
 // 主持人创建会议房间

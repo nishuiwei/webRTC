@@ -157,3 +157,37 @@ export const toggleMic = (isMuted) => {
 export const toggleCamera = (isDisabled) => {
   localStream.getVideoTracks()[0].enabled = isDisabled ? true : false
 }
+
+export const toggleScreenShare = (
+  isScreenSharingActive, 
+  screenSharingStream = null
+  ) => {
+    if(isScreenSharingActive) {
+      // 展示本地的媒体流
+      switchVideoTracks(localStream)
+    } else {
+      // 展示共享屏幕媒体流
+      switchVideoTracks(screenSharingStream)
+    }
+}
+
+const switchVideoTracks = (stream) => {
+  //遍历所有对等连接对象
+  for (let socket_id in peers) {
+    for (let index in peers[socket_id].streams[0].getTracks()) {
+      for (let index2 in stream.getTracks()) {
+        //kind属性规定轨道的种类（eg:audio,video）
+        if (
+          peers[socket_id].streams[0].getTracks()[index].kind ===
+          stream.getTracks()[index2].kind
+        ) {
+          peers[socket_id].replaceTrack(
+            peers[socket_id].streams[0].getTracks()[index],
+            stream.getTracks()[index2],
+            peers[socket_id].streams[0]
+          );
+        }
+      }
+    }
+  }
+};

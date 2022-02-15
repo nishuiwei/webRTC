@@ -1,9 +1,12 @@
 import React from 'react'
+import ChatLabel from './ChatLabel'
+import Messages from './Messages'
 
 const ChatSection = () => {
   return (
     <div className='chat_section_container'>
-      这是聊天区域
+      <ChatLabel />
+      <Messages />
     </div>
   )
 }

@@ -73,7 +73,6 @@ export const prepareNewPeerConnection = async (connUserSocketId, isInitiator) =>
     config: configuration,
     stream: localStream,
     channelName: messageChannel
-    ,
   });
   // peers[connUserSocketId].channelName = messageChannel
   console.log(peers)
@@ -283,7 +282,6 @@ export const sendMessageUsingDataChannel = (messageContent) => {
 
   const stringifiedMessageData = JSON.stringify(messageData);
   for (let socket_id in peers) {
-    console.log(peers)
     peers[socket_id].send(stringifiedMessageData);
   }
 };

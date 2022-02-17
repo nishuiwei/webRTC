@@ -41,20 +41,22 @@ export const connectWithScoketIOServer = () => {
 }
 
 // 主持人创建会议房间
-export const createNewRoom = (identity) => {
+export const createNewRoom = (identity, onlyAudio) => {
   const data = {
-    identity
+    identity,
+    onlyAudio
   }
   // 向服务器发送创建会议房间的数据（事件）
   socket.emit('create-new-room', data)
 }
 
 // 加入会议房间
-export const joinRoom = (roomId, identity) => {
+export const joinRoom = (roomId, identity, onlyAudio) => {
   // 向服务器发送加入会议房间的 数据（事件）
   const data = {
     roomId,
-    identity
+    identity,
+    onlyAudio
   }
 
   socket.emit('join-room', data)

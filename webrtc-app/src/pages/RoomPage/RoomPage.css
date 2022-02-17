@@ -420,6 +420,7 @@ video {
     height: 100%;
     top: 0%;
     left: 0%;
+    z-index: 99;
 }
 
 .label_only_audio_container {

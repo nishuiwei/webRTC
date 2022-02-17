@@ -36,14 +36,14 @@ const JoinRoomContent = (props) => {
     const { roomExists, full } = response
     if(roomExists) {
       if(full) {
-        setErrorMessage('会议房间人数已满，请稍后再试')
+        setErrorMessage('会议房间人数已满, 请稍后再试')
       } else {
         // 进入房间
         setRoomIdAction(roomId)
         navigate('/room')
       }
     } else {  
-      setErrorMessage('会议房间不存在，请验证你的ID是否正确')
+      setErrorMessage('会议房间不存在, 请验证你的ID是否正确')
     }
   }
 

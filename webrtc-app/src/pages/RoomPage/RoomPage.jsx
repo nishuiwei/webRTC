@@ -7,7 +7,7 @@ import ParticipantsSection from './ParticipantsSection/ParticipantsSection'
 import RoomLabel from './RoomLabel'
 import './Roompage.css'
 import VideoSection from './VideoSection/VideoSection'
-const RoomPage = ({roomId, isRoomHost, identity, showOverlay}) => {
+const RoomPage = ({roomId, isRoomHost, identity, showOverlay, connectOnlyWithAudio}) => {
   useEffect(() => {
     if (!isRoomHost && !roomId) {
       // 动态获取接口
@@ -15,7 +15,8 @@ const RoomPage = ({roomId, isRoomHost, identity, showOverlay}) => {
       // 设置当前定向到的URL
       window.location.href = siteUrl;
     }
-    webRTCHanler.getLocalPreviewAndInitRoomConnection(isRoomHost, identity, roomId)
+    webRTCHanler.getLocalPreviewAndInitRoomConnection(isRoomHost, identity, roomId, connectOnlyWithAudio)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

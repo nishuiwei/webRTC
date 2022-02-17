@@ -75,7 +75,7 @@ io.on('connection', (socket) => {
 // socket.io handler
 const createNewRoomHandler = (data, socket) => {
   const socketId = socket.id
-  const { identity } = data
+  const { identity, onlyAudio } = data
   const roomId = uuidv4()
   console.log(`主持人正在创建会议房间...${socketId}`)
   // 创建新用户（进入会议的人）
@@ -83,7 +83,8 @@ const createNewRoomHandler = (data, socket) => {
     id: uuidv4(),
     identity,
     roomId,
-    socketId
+    socketId,
+    onlyAudio
   }
   // 将新用户添加到已链接的用户数组里面
   connectedUsers = [...connectedUsers, newUser]
@@ -103,13 +104,14 @@ const createNewRoomHandler = (data, socket) => {
 
 // 加入房间
 const joinRoomHandler = (data, socket) => {
-  const { roomId, identity } = data
+  const { roomId, identity, onlyAudio } = data
   const socketId = socket.id
   const newUser = {
     id: uuidv4(),
     identity,
     roomId,
-    socketId
+    socketId,
+    onlyAudio
   }
 
   // 判断传递过来的 roomId 是否匹配对应会议房间

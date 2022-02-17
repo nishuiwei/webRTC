@@ -15,7 +15,7 @@ const RoomPage = ({roomId, isRoomHost, identity, showOverlay}) => {
       // 设置当前定向到的URL
       window.location.href = siteUrl;
     }
-    webRTCHanler.getLocalPreviewAndInitRoomConnect(isRoomHost, identity, roomId)
+    webRTCHanler.getLocalPreviewAndInitRoomConnection(isRoomHost, identity, roomId)
   }, [])
 
   return (

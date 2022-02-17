@@ -28,7 +28,7 @@ export const connectWithScoketIOServer = () => {
     socket.emit('conn-init', {connUserSocketId})
   })
   socket.on('conn-signal', data => {
-    webRTCHander.handlerSinglingData(data)
+    webRTCHander.handleSignalingData(data)
   })
   socket.on('conn-init', data => {
     // 接收方的socketId

@@ -1,6 +1,7 @@
 import io from 'socket.io-client'
-import { setParticipants, setRoomId } from '../store/actions'
+import { setParticipants, setRoomId, setSocketId } from '../store/actions'
 import store from '../store/store'
+import { appendNewMessageToChatHistory } from './directMessages'
 import * as webRTCHander from './webRTCHandler'
 
 const SERVER = 'http://localhost:5555'
@@ -10,6 +11,7 @@ export const connectWithScoketIOServer = () => {
   socket = io(SERVER)
   socket.on('connect', () => {
     console.log('socket 成功链接')
+    store.dispatch(setSocketId(socket.id))
     console.log(socket.id)
   })
   socket.on('room-id', data => {
@@ -38,6 +40,11 @@ export const connectWithScoketIOServer = () => {
   socket.on('user-disconected', data => {
     webRTCHander.removePeerConnection(data)
   })
+
+  socket.on('direct-message', data => {
+    // console.log(data, '成功获取发送的私信')
+    appendNewMessageToChatHistory(data)
+  })
 }
 
 // 主持人创建会议房间
@@ -65,4 +72,9 @@ export const joinRoom = (roomId, identity, onlyAudio) => {
 // 将信令数据发送到服务器
 export const signalPeerData = (data) => {
   socket.emit('conn-signal', data)
+}
+
+// 发起私信
+export const sendDirectmessage = (data) => {
+  socket.emit('direct-message', data)
 }

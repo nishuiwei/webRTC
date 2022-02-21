@@ -70,6 +70,10 @@ io.on('connection', (socket) => {
   socket.on('conn-init', (data) => {
     initailizeConnectionHandler(data, socket)
   })
+  
+  socket.on('direct-message', (data) => {
+    directMessageHandler(data, socket)
+  })
 })
 
 // socket.io handler
@@ -176,6 +180,33 @@ const initailizeConnectionHandler = (data, socket) => {
   const { connUserSocketId } = data
   const initData = {connUserSocketId: socket.id}
   io.to(connUserSocketId).emit('conn-init', initData)
+}
+
+// 私信对象
+const directMessageHandler = (data, socket) => {
+  const { receiverSocketId, messageContent, identity } = data
+  const isConnUser = connectedUsers.find(connUser => connUser.socketId === receiverSocketId)
+  if (isConnUser) {
+    // 信息发送给接收方
+    const receiverData = {
+      authorSocketId: socket.id,
+      messageContent: messageContent,
+      isAuthor: false,
+      identity: identity
+    }
+
+    socket.to(receiverSocketId).emit('direct-message', receiverData)
+    // 信息返回给发送方
+
+    const authorData = {
+      receiverSocketId,
+      messageContent,
+      isAuthor: true,
+      identity
+    }
+
+    socket.emit('direct-message', authorData)
+  }
 }
 
 // 监听端口号

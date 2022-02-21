@@ -20,6 +20,7 @@ const Message = ({ author, content, sameAuthor, messageCreatedByMe }) => {
 };
 
 const Messages = ({ messages }) => {
+  console.log(messages)
   return (
     <div className='messages_container'>
       {messages.map((message, index) => {

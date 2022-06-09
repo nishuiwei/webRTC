@@ -1,5 +1,6 @@
 const express = require('express')
 const http = require('http')
+const path = require('path')
 const { v4: uuidv4 } = require('uuid')
 const cors = require('cors')
 
@@ -208,6 +209,14 @@ const directMessageHandler = (data, socket) => {
     socket.emit('direct-message', authorData)
   }
 }
+app.use(express.static(path.join(__dirname, '/build')))
+
+// app.get('*', (req, res) => {
+// })
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'))
+})
 
 // 监听端口号
 server.listen(PORT, () => {
